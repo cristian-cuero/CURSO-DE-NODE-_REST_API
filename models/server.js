@@ -1,6 +1,7 @@
 
 const express = require('express')
 var cors = require('cors')
+const { dbconnection} = require('../Database/config')
 
 class Server {
     //inicio mi servidor
@@ -9,6 +10,9 @@ class Server {
         this.PORT = process.env.PORT
         // donde esta configurado mis rutas
         this.usuarioRoute = '/api/usuarios'
+
+        //conexion BD
+        this.ConetarDB();
 
         //middlewares funciones añadidas al servicio
         this,this.middleware();
@@ -40,6 +44,13 @@ class Server {
 
         //directorio publico siempre llama el index para el get / solo 
         this.app.use(express.static('public'))
+    }
+
+
+    //DB
+    async ConetarDB( ){
+
+        dbconnection();
     }
 
 }

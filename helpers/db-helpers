@@ -1,0 +1,38 @@
+const Role = require('../models/role')
+//importar modelo par insertar Contraeña 
+const Usuario = require('../models/usuario');
+
+//mira si el rol es valido  es helper
+const esRolValido = async (rol = '') =>{
+    const existerol = await Role.findOne({rol});
+    if( !existerol ) {
+        //eror personalizado 
+        throw new Error('el rol no esta registado en la BD') 
+    }
+}
+
+//validarEmail
+ //verificar si el correo existe correo:correo se omite por redundancia findone busca objeto donde este el campo a buscar
+//se usa el helper y la ruta por eso el threo
+ const emailexiste = async(correo = '') => {
+
+    
+    const existeemail = await Usuario.findOne({correo})
+    if (existeemail){
+        throw new Error(`el corre ${ correo } ya se encuentra registrado`) 
+    }
+}
+
+const existeUsuarioID = async(id) => {
+
+    
+    const existeuser = await Usuario.findById(id)
+    if (!existeuser){
+        throw new Error(`el usuario con ${ id } no se encuentra registrado`) 
+    }
+}
+module.exports = {
+    esRolValido,
+    emailexiste,
+    existeUsuarioID
+}
