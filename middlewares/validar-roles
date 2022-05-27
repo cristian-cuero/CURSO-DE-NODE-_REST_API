@@ -1,0 +1,50 @@
+const { response } = require("express")
+
+
+
+const esAdminRole = (req , res = response,  next   ) => {
+
+  if(!req.usuario){
+      return res.status(500).json({
+          err:"Erro 500"
+      });
+  } 
+  const {rol , nombre} = req.usuario;
+  
+  if( rol != "ADMIN_ROLE"){
+      return res.status(501).json({
+         err:`El Usuario ${nombre} no tiene privilegios suficientess`
+      });
+  }
+
+ //siguinete middleware
+next();
+}
+//... todo lo que me mande
+const tienRole = ( ...roles) => {
+
+    
+    //este recibe los parametos normales d ela funcion
+    return (req , res = response, next) => {
+
+        if(!req.usuario){
+            return res.status(500).json({
+                err:"Erro 500"
+            });
+        
+    }
+    if( !roles.includes(req.usuario.rol )){
+        return res.status(500).json({
+            err:`el servicio requiere uno de estos roles ${roles}`
+        });
+    }
+    next();
+}
+
+}
+
+
+module.exports = {
+    esAdminRole,
+    tienRole
+}

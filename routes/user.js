@@ -6,7 +6,19 @@ const { emailexiste } = require('../helpers/db-helpers');
 const { existeUsuarioID } = require('../helpers/db-helpers');
 //hemper que valida los roles
 const { esRolValido } = require('../helpers/db-helpers');
-const { validarcampos } = require('../middlewares/validar-campos');
+
+//exporta el index
+const {
+    validarcampos,
+    validarJWT,
+    tienRole,
+    esAdminrole
+
+} = require('../middlewares')
+
+
+//const { esAdminRole } = require('../middlewares/validar-roles');
+
 const router = Router();
 
 //lamar rutas  se usa la ruta que se uso en el midlleware
@@ -42,6 +54,9 @@ router.post('/', [
     
     ], UsuarioPost)
 router.delete('/:id', [
+    validarJWT,
+    //esAdminRole,
+    tienRole("ADMIN_ROLE", "VENTAS_ROLE"), 
     check('id' , ' no es un id valido').isMongoId(),
     check('id').custom(existeUsuarioID),
     validarcampos

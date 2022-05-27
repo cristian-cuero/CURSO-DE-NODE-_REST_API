@@ -95,17 +95,21 @@ const UsuarioPut = async (req, res = response) => {
 
     })
 }
-const UsuarioDelete = async (req, res = response) => {
+const UsuarioDelete = async (req , res = response) => {
     
     const {id} = req.params
+    //viende del controlador del JWT
+    const usuarioAutenticado = req.usuario;
 
     //borar Fisicamente 
-    //const usuario = await Usuario.findByIdAndDelete(id)
+   // const usuario = await Usuario.findByIdAndDelete(id)
 
     //cambiar estado
     const usuario = await Usuario.findByIdAndUpdate(id , {estado : false});
     res.json({
-        usuario
+        usuario,
+        usuarioAutenticado
+       
         
 
     })

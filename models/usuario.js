@@ -37,10 +37,12 @@ const UsuarioSchema = Schema({
 });
 
 //funcion normal por que ña flecha mantiene el this y esta lo modifica
-//sacando la contrasela
+//sacando la contrasela y retorno solo el usuario
 UsuarioSchema.methods.toJSON = function(){
 
-    const { __v,  password, ... usuario} = this.toObject()
+    const { __v,  password, _id, ... usuario} = this.toObject()
+    //remplazando el _id de la BD Por UID
+    usuario.uid = _id;
     return usuario
 }
 

@@ -10,7 +10,8 @@ class Server {
         this.PORT = process.env.PORT
         // donde esta configurado mis rutas
         this.usuarioRoute = '/api/usuarios'
-
+        //ruta auth
+        this.authPath = '/api/auth'
         //conexion BD
         this.ConetarDB();
 
@@ -23,7 +24,9 @@ class Server {
 
     routes(){
         //middleware para rutas la ruta que se usa ahora
+        this.app.use(this.authPath, require('../routes/auth'))
       this.app.use(this.usuarioRoute, require('../routes/user'))
+     
     }
 
     listen(){
