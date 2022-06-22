@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const { check, } = require('express-validator');
-const {login} = require('../controllers/auth');
+const {login, googleSigning} = require('../controllers/auth');
 const {validarcampos} = require('../middlewares/validar-campos')
 const router = Router();
 
@@ -11,5 +11,10 @@ router.post('/login',[
     validarcampos
 ] , login)
 
+//ruta que recibe de google
+router.post('/google',[
+    check('id_token' , 'el  token es valido').notEmpty(),
+    validarcampos
+] , googleSigning)
 
 module.exports = router
