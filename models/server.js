@@ -9,9 +9,19 @@ class Server {
         this.app = express()
         this.PORT = process.env.PORT
         // donde esta configurado mis rutas
-        this.usuarioRoute = '/api/usuarios'
+        //this.usuarioRoute = '/api/usuarios'
         //ruta auth
-        this.authPath = '/api/auth'
+        //this.authPath = '/api/auth'
+        //rutas de la categoria
+       /*  this.categoria = '/api/categorias' */
+       //oyta forma de usar varias rutas sin el this por cada uno+
+       this.paths = {
+        authPath : '/api/auth',
+        usuarioRoute:'/api/usuarios',
+        categorias : '/api/categorias',
+        productos: '/api/productos',
+        buscar:'/api/buscar'
+       }
         //conexion BD
         this.ConetarDB();
 
@@ -24,9 +34,13 @@ class Server {
 
     routes(){
         //middleware para rutas la ruta que se usa ahora
-        this.app.use(this.authPath, require('../routes/auth'))
-      this.app.use(this.usuarioRoute, require('../routes/user'))
-     
+        this.app.use(this.paths.authPath, require('../routes/auth'))
+        this.app.use(this.paths.usuarioRoute, require('../routes/user'))
+        this.app.use(this.paths.categorias , require('../routes/categorias'))
+        this.app.use(this.paths.productos , require('../routes/productos'))
+        this.app.use(this.paths.buscar , require('../routes/buscar'))
+
+        
     }
 
     listen(){
