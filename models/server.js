@@ -2,6 +2,7 @@
 const express = require('express')
 var cors = require('cors')
 const { dbconnection} = require('../Database/config')
+const fileUpload = require('express-fileupload')
 
 class Server {
     //inicio mi servidor
@@ -20,16 +21,19 @@ class Server {
         usuarioRoute:'/api/usuarios',
         categorias : '/api/categorias',
         productos: '/api/productos',
-        buscar:'/api/buscar'
+        buscar:'/api/buscar',
+        uploads: '/api/uploads'
+
        }
         //conexion BD
         this.ConetarDB();
 
         //middlewares funciones añadidas al servicio
-        this,this.middleware();
+        this.middleware();
          //inicia las rutas
-        this.routes()
+        this.routes();
         //levanta mi servidor
+        //this.listen();
     }
 
     routes(){
@@ -39,6 +43,8 @@ class Server {
         this.app.use(this.paths.categorias , require('../routes/categorias'))
         this.app.use(this.paths.productos , require('../routes/productos'))
         this.app.use(this.paths.buscar , require('../routes/buscar'))
+        this.app.use(this.paths.buscar , require('../routes/buscar'))
+        this.app.use(this.paths.uploads , require('../routes/oupload'))
 
         
     }
@@ -49,10 +55,10 @@ class Server {
         })
     }
 
-    //middleware
+    //middleware se ejecutan antes de las rutas
     middleware(){
 
-        //cors 
+        //cors peticiones crusadas 
         this.app.use(cors());
 
         //lectura y parseo de body  recibe informacion en formato json
@@ -61,6 +67,13 @@ class Server {
 
         //directorio publico siempre llama el index para el get / solo 
         this.app.use(express.static('public'))
+
+        //acepta archiva desde peticiones rest es una configuracion
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true //mucho cuidado que esto crea carpeta donde sea 
+        }));
     }
 
 
